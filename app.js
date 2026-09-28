@@ -4,7 +4,31 @@
   const TOPIC_ICONS={math:"M5 12h14M12 5v14|M7 7h10v10H7z",finance:"M5 8h14v11H5z|M8 8V5h8v3M9 13h6",health:"M12 20s-7-4.2-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.8-7 9-7 9z","date-time":"M8 3v4M16 3v4M5 9h14|M12 12v3l2 1",converters:"M5 8h10|M12 5l3 3-3 3M19 16H9M12 13l-3 3 3 3"};
   const makeIcon=(d,cls)=>{const p=String(d||"M8 12h8|M12 8v8").split("|");return '<svg class="'+(cls||"tool-svg")+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+p[0]+'"/>'+(p[1]?'<path d="'+p[1]+'"/>':"")+"</svg>";};
   const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(Boolean).pop()||""}catch{return ""}};
-  function decorateVisuals(){document.querySelectorAll(".card[href]").forEach(card=>{const s=slugOf(card.getAttribute("href"));const d=ICONS[s]||TOPIC_ICONS[s];if(!d)return;let holder=card.querySelector(".icon");if(!holder){holder=document.createElement("span");holder.className="icon";card.insertBefore(holder,card.firstChild)}holder.className="icon card-icon";holder.innerHTML=makeIcon(d,"card-svg")});const s=document.body.dataset.calc,h=document.querySelector(".panel h1");if(s&&h&&!h.parentElement.classList.contains("tool-title-row")){const row=document.createElement("div");row.className="tool-title-row";const ico=document.createElement("span");ico.className="tool-title-icon";ico.innerHTML=makeIcon(ICONS[s]);h.parentNode.insertBefore(row,h);row.append(ico,h)}}decorateVisuals();
+  const TOOL_TOPICS={
+    "percentage-calculator":"math","percentage-change-calculator":"math","fraction-calculator":"math","ratio-calculator":"math","average-calculator":"math","scientific-calculator":"math","random-number-generator":"math","standard-deviation-calculator":"math","probability-calculator":"math","gcf-calculator":"math","lcm-calculator":"math","quadratic-formula-calculator":"math",
+    "mortgage-calculator":"finance","loan-calculator":"finance","auto-loan-calculator":"finance","compound-interest-calculator":"finance","simple-interest-calculator":"finance","investment-calculator":"finance","retirement-calculator":"finance","savings-calculator":"finance","debt-payoff-calculator":"finance","tip-calculator":"finance","discount-calculator":"finance","sales-tax-calculator":"finance","profit-margin-calculator":"finance",
+    "bmi-calculator":"health","bmr-calculator":"health","tdee-calculator":"health","calorie-calculator":"health","body-fat-calculator":"health","ideal-weight-calculator":"health","pace-calculator":"health",
+    "age-calculator":"date","date-difference-calculator":"date","days-between-dates-calculator":"date","business-days-calculator":"date","time-duration-calculator":"date","countdown-calculator":"date","day-of-week-calculator":"date","time-zone-converter":"date",
+    "unit-converter":"convert","length-converter":"convert","weight-converter":"convert","temperature-converter":"convert","volume-converter":"convert","area-calculator":"convert","speed-calculator":"convert","fuel-cost-calculator":"convert","paint-calculator":"convert","concrete-calculator":"convert"
+  };
+  function decorateVisuals(){
+    document.querySelectorAll(".card[href]").forEach(card=>{
+      const s=slugOf(card.getAttribute("href")), topic=TOOL_TOPICS[s];
+      const d=ICONS[s]||TOPIC_ICONS[s]; if(!d)return;
+      if(topic)card.classList.add("tone-"+topic);
+      let holder=card.querySelector(".icon");
+      if(!holder){holder=document.createElement("span");holder.className="icon";card.insertBefore(holder,card.firstChild)}
+      holder.className="icon card-icon";holder.innerHTML=makeIcon(d,"card-svg");
+    });
+    const s=document.body.dataset.calc,h=document.querySelector(".panel h1"),topic=TOOL_TOPICS[s];
+    if(topic)document.querySelector(".panel")?.classList.add("tool-tone-"+topic);
+    if(s&&h&&!h.parentElement.classList.contains("tool-title-row")){
+      const row=document.createElement("div");row.className="tool-title-row";
+      const ico=document.createElement("span");ico.className="tool-title-icon";ico.innerHTML=makeIcon(ICONS[s]);
+      h.parentNode.insertBefore(row,h);row.append(ico,h);
+    }
+  }
+  decorateVisuals();
   const num = (id, fallback = NaN) => {
     const el = document.getElementById(id);
     const n = Number(el?.value);
