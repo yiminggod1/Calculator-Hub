@@ -156,3 +156,9 @@ footer{margin-top:75px;background:#eef1f6;border-top:1px solid #dde3ec}
  .search-status{display:none}
  .catalog-search button{padding:8px 9px}
 }
+/* Homepage/ad safety guard */
+main{position:relative;z-index:1}
+.hero{z-index:1}
+.ad{position:relative;overflow:hidden;min-height:94px;height:94px;max-height:180px;isolation:isolate}
+.ad iframe,.ad ins,.ad > div{max-height:180px!important;overflow:hidden!important}
+.ad iframe{display:block;width:100%;border:0}
