@@ -136,3 +136,23 @@ footer{margin-top:75px;background:#eef1f6;border-top:1px solid #dde3ec}
 @media(max-width:560px){
  .hero-copy{padding:42px 0 14px}.hero h1{font-size:42px;letter-spacing:-2.5px}.hero p{font-size:15px}.hero-actions{flex-direction:column;align-items:stretch}.hero-primary,.hero-secondary{width:100%}.search-hero{height:54px}.hero-art{height:345px}.calc-preview{width:94%;transform:none;padding:14px}.preview-values{grid-template-columns:1fr 1fr}.preview-values div:last-child{display:none}.preview-result strong{font-size:25px}.floating-note{transform:scale(.86)}.note-one{left:-6px;top:28px}.note-two{right:-6px;bottom:22px}.orbit-a{width:360px;height:360px}.orbit-b{width:430px;height:430px}.quick-start{padding-top:32px}.quick-heading{align-items:start;flex-direction:column}.featured-grid{grid-template-columns:1fr}.featured-card{min-height:130px}#calculators>.category>.grid{grid-template-columns:1fr}.section-head h2{font-size:24px}
 }
+
+/* Calculator search */
+.catalog-search{position:relative;display:flex;align-items:center;gap:10px;margin:22px 0 30px;padding:6px 7px 6px 15px;background:#fff;border:1px solid #d8dee8;border-radius:15px;box-shadow:0 8px 26px rgba(35,43,71,.055);max-width:920px}
+.catalog-search:focus-within{border-color:#aaa5eb;box-shadow:0 0 0 4px rgba(90,85,212,.08),0 10px 30px rgba(35,43,71,.07)}
+.catalog-search-icon{display:grid;place-items:center;flex:0 0 24px;color:#6b7280}
+.catalog-search-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.catalog-search input{min-width:0;flex:1;border:0;outline:0;background:transparent;padding:12px 2px;font:inherit;font-size:15px;color:#172033}
+.catalog-search input::placeholder{color:#9aa3b1}
+.catalog-search button{border:0;background:#f1f2f7;color:#596273;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:800;cursor:pointer}
+.catalog-search button:hover{background:#e7e9f0;color:#333b4a}
+.search-status{flex:0 0 auto;padding:7px 10px;border-left:1px solid #e6e9ef;color:#8992a1;font-size:11px;font-weight:800;white-space:nowrap}
+#calculators .category[hidden]{display:none}
+#calculators .card[hidden]{display:none}
+@media(max-width:560px){
+ .catalog-search{margin:18px 0 24px;padding-left:12px;gap:7px}
+ .catalog-search input{font-size:14px;padding:11px 0}
+ .catalog-search input::placeholder{font-size:13px}
+ .search-status{display:none}
+ .catalog-search button{padding:8px 9px}
+}
