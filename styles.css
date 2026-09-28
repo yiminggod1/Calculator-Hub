@@ -499,3 +499,10 @@ main{position:relative;z-index:1}
   .tool .result strong{font-size:27px}
   .tool .panel>.ad{min-height:78px}
 }
+
+/* Breadcrumb + tool navigation */
+.breadcrumb{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:0 0 20px;color:#7a8498;font-size:12px;font-weight:650}
+.breadcrumb a{color:#5f6b82}.breadcrumb a:hover{color:var(--brand)}
+.breadcrumb strong{color:#303b50;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(48vw,360px)}
+.breadcrumb span{color:#b1b8c6}
+@media(max-width:560px){.breadcrumb{margin-bottom:16px}.breadcrumb strong{max-width:55vw}}
