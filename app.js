@@ -119,6 +119,7 @@ const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(
       const d=ICONS[s]||TOPIC_ICONS[s]; if(!d)return;
       if(topic)card.classList.add("tone-"+topic);
       let holder=card.querySelector(".icon");
+      if(!holder && card.firstElementChild?.tagName==="SPAN"){holder=card.firstElementChild}
       if(!holder){holder=document.createElement("span");holder.className="icon";card.insertBefore(holder,card.firstChild)}
       holder.className="icon card-icon";
       holder.innerHTML=makeIcon(d,"card-svg");
