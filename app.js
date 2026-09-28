@@ -148,7 +148,7 @@ const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(
     }
   }
   function enhanceToolSEO(){
-    const slug=document.body.dataset.calc;
+    const slug=slugOf(location.pathname)||document.body.dataset.calc;
     if(!slug)return;
     const title=(document.querySelector("h1")?.textContent||document.title.replace(/\s*\|.*$/,"")).trim();
     const desc=(document.querySelector(".desc")?.textContent||document.querySelector('meta[name="description"]')?.content||"").trim();
