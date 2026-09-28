@@ -203,5 +203,33 @@
   });
   window.CalculatorHub={calc};
 })();
-function initSearch(){const s=document.getElementById("search");if(!s)return;const cards=[...document.querySelectorAll(".card")];s.addEventListener("input",()=>{const q=s.value.trim().toLowerCase();cards.forEach(c=>{c.style.display=!q||c.textContent.toLowerCase().includes(q)?"":"none"})})}
+function initSearch(){
+  const inputs=[document.getElementById("search"),document.getElementById("catalogSearch")].filter(Boolean);
+  if(!inputs.length)return;
+  const cards=[...document.querySelectorAll("#calculators .grid .card")];
+  const categories=[...document.querySelectorAll("#calculators .category")];
+  const clear=document.getElementById("clearSearch");
+  const status=document.getElementById("searchStatus");
+  const normalize=v=>v.trim().toLowerCase();
+  const run=(value)=>{
+    const q=normalize(value);
+    let shown=0;
+    cards.forEach(card=>{
+      const hay=(card.textContent+" "+(card.getAttribute("href")||"")).toLowerCase();
+      const match=!q||hay.includes(q);
+      card.hidden=!match;
+      if(match)shown++;
+    });
+    categories.forEach(cat=>{
+      const hasVisible=cat.querySelector("#calculators .grid .card:not([hidden])");
+      cat.hidden=!!q&&!hasVisible;
+    });
+    inputs.forEach(input=>{if(input.value!==value)input.value=value;});
+    if(clear)clear.hidden=!q;
+    if(status)status.textContent=q?(shown+" result"+(shown===1?"":"s")):"50 tools";
+  };
+  inputs.forEach(input=>input.addEventListener("input",()=>run(input.value)));
+  clear?.addEventListener("click",()=>{run("");inputs[0]?.focus();});
+  run(inputs.find(i=>i.value)?.value||"");
+}
 document.addEventListener("DOMContentLoaded",initSearch);
