@@ -62,3 +62,5 @@
     document.addEventListener("click",(ev)=>{if(ev.target.closest("[data-action=calc]")){ev.preventDefault();calc();}},{capture:true});
   });
 })();
+function initSearch(){const s=document.getElementById("search");if(!s)return;const cards=[...document.querySelectorAll(".card")];s.addEventListener("input",()=>{const q=s.value.trim().toLowerCase();cards.forEach(c=>{c.style.display=!q||c.textContent.toLowerCase().includes(q)?"":"none"})})}
+document.addEventListener("DOMContentLoaded",initSearch);
