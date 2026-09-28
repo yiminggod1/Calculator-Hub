@@ -221,3 +221,126 @@ main{position:relative;z-index:1}
 @media(max-width:800px){
   #calculators>.category>.grid .card .card-icon{width:48px!important;height:48px!important}
 }
+
+/* Art-directed tool library */
+#calculators .tool-card{
+  position:relative;
+  min-height:218px;
+  padding:22px 22px 20px;
+  overflow:hidden;
+  isolation:isolate;
+  border:1px solid rgba(218,225,238,.95);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 100% 100%,var(--card-glow,#eef2ff) 0,transparent 34%),
+    linear-gradient(145deg,#fff 0%,#fbfcff 100%);
+  box-shadow:0 10px 28px rgba(35,45,72,.055);
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+}
+#calculators .tool-card:before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(125deg,rgba(255,255,255,.8),transparent 48%);
+  pointer-events:none;z-index:-1;
+}
+#calculators .tool-card:hover{
+  transform:translateY(-7px);
+  border-color:rgba(174,184,211,.8);
+  box-shadow:0 22px 48px rgba(35,45,72,.12);
+}
+#calculators .tool-card .card-icon{
+  position:relative;z-index:3;
+  width:58px!important;height:58px!important;
+  margin:0 0 18px!important;
+  border-radius:18px!important;
+  display:grid!important;place-items:center;
+  background:linear-gradient(145deg,#fff,#f5f7fc)!important;
+  border:1px solid rgba(214,222,237,.9)!important;
+  box-shadow:0 10px 22px rgba(38,49,79,.09),inset 0 1px 0 #fff!important;
+  color:var(--icon-color,#4f46e5)!important;
+  transition:transform .28s ease,box-shadow .28s ease;
+}
+#calculators .tool-card:hover .card-icon{
+  transform:translateY(-2px) rotate(-2deg);
+  box-shadow:0 14px 28px rgba(38,49,79,.13),inset 0 1px 0 #fff!important;
+}
+#calculators .tool-card .card-svg{width:30px;height:30px;stroke-width:1.65}
+#calculators .tool-card .card-meta{
+  display:block;
+  margin-bottom:6px;
+  font-size:10px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.16em;
+  color:var(--icon-color,#4f46e5);
+}
+#calculators .tool-card h3{
+  position:relative;z-index:2;
+  margin:0 38px 8px 0!important;
+  font-size:19px;
+  line-height:1.2;
+  letter-spacing:-.025em;
+}
+#calculators .tool-card p{
+  position:relative;z-index:2;
+  max-width:78%;
+  margin:0!important;
+  font-size:13px;
+  line-height:1.55;
+  color:#748097!important;
+}
+#calculators .tool-card .card-arrow{
+  position:absolute;right:19px;top:20px;z-index:4;
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  border:1px solid rgba(215,222,235,.9);
+  border-radius:50%;
+  background:rgba(255,255,255,.82);
+  color:#65718a;
+  font-size:19px;
+  transition:transform .25s ease,background .25s ease,color .25s ease;
+}
+#calculators .tool-card:hover .card-arrow{
+  transform:translate(3px,-2px);
+  background:#fff;color:var(--icon-color,#4f46e5);
+}
+#calculators .tool-card .card-watermark{
+  position:absolute;right:-16px;bottom:-21px;z-index:0;
+  width:122px;height:122px;
+  color:var(--icon-color,#4f46e5);
+  opacity:.075;
+  transform:rotate(-7deg);
+  transition:transform .35s ease,opacity .35s ease;
+}
+#calculators .tool-card:hover .card-watermark{
+  transform:rotate(0) scale(1.08);
+  opacity:.12;
+}
+#calculators .tool-card .watermark-svg{width:100%;height:100%;stroke-width:1.25}
+#calculators .tool-card.tone-math{--icon-color:#5548dd;--card-glow:#efedff}
+#calculators .tool-card.tone-finance{--icon-color:#087f78;--card-glow:#e7f7f3}
+#calculators .tool-card.tone-health{--icon-color:#d45740;--card-glow:#fff0eb}
+#calculators .tool-card.tone-date{--icon-color:#3272d3;--card-glow:#eaf2ff}
+#calculators .tool-card.tone-convert{--icon-color:#7a52bc;--card-glow:#f1eafe}
+
+/* Category tiles get the same art direction */
+#calculators > .category .grid .card{
+  position:relative;min-height:205px;padding:24px 22px;
+  overflow:hidden;border-radius:24px;
+}
+#calculators > .category .grid .card .card-icon{
+  width:62px!important;height:62px!important;border-radius:20px!important;
+  margin-bottom:24px!important;
+}
+#calculators > .category .grid .card h3{font-size:21px!important;margin:0 0 7px!important}
+#calculators > .category .grid .card p{max-width:78%;font-size:13px}
+#calculators > .category .grid .card:after{
+  content:"↗";
+  position:absolute;right:20px;bottom:18px;
+  width:36px;height:36px;border:1px solid #e2e7f0;border-radius:50%;
+  display:grid;place-items:center;background:#fff;color:#69758d;font-size:17px;
+}
+@media(max-width:800px){
+  #calculators .tool-card{min-height:196px}
+  #calculators .tool-card .card-watermark{width:105px;height:105px}
+}
