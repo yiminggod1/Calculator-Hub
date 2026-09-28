@@ -518,3 +518,9 @@ main{position:relative;z-index:1}
 .content-guide summary{cursor:pointer;font-weight:750;color:#303b50}
 .content-guide details p{margin:10px 0 0}
 @media(max-width:560px){.content-guide{margin-top:24px;padding-top:24px}.content-guide h2{margin-top:24px}.content-guide .example{padding:15px 16px}}
+
+/* Mobile usability safeguards */
+html,body{overflow-x:hidden}
+.btn{min-height:48px}
+.related-link{min-height:44px}
+@media(max-width:560px){.field input,.field select{min-height:52px}.btn{width:100%;padding:13px 16px}.related-link{max-width:100%}}
