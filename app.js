@@ -147,6 +147,53 @@ const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(
       h.parentNode.insertBefore(row,h);row.append(ico,h);
     }
   }
+  function enhanceToolSEO(){
+    const slug=document.body.dataset.calc;
+    if(!slug)return;
+    const title=(document.querySelector("h1")?.textContent||document.title.replace(/\s*\|.*$/,"")).trim();
+    const desc=(document.querySelector(".desc")?.textContent||document.querySelector('meta[name="description"]')?.content||"").trim();
+    const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;
+    const topic=TOOL_TOPICS[slug];
+    const topicName=topic==="math"?"Math":topic==="finance"?"Finance":topic==="health"?"Health & Fitness":topic==="date"?"Date & Time":"Converters & Everyday";
+    const topicPath=topic==="math"?"math/":topic==="finance"?"finance/":topic==="health"?"health/":topic==="date"?"date-time/":"converters/";
+    const upsertMeta=(key,value,attr="name")=>{
+      if(!value)return;
+      let m=document.head.querySelector('meta['+attr+'="'+key+'"]');
+      if(!m){m=document.createElement("meta");m.setAttribute(attr,key);document.head.appendChild(m)}
+      m.content=value;
+    };
+    upsertMeta("og:title",title,"property");
+    upsertMeta("og:description",desc,"property");
+    upsertMeta("og:url",canonical,"property");
+    upsertMeta("og:type","website","property");
+    upsertMeta("twitter:card","summary");
+    upsertMeta("twitter:title",title);
+    upsertMeta("twitter:description",desc);
+    if(!document.querySelector(".breadcrumb")){
+      const nav=document.createElement("nav");
+      nav.className="breadcrumb";
+      nav.setAttribute("aria-label","Breadcrumb");
+      nav.innerHTML='<a href="../">Calculator Hub</a><span aria-hidden="true">/</span><a href="../'+topicPath+'">'+topicName+'</a><span aria-hidden="true">/</span><strong>'+title.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</strong>';
+      const panel=document.querySelector(".panel");
+      if(panel)panel.prepend(nav);
+    }
+    if(!document.head.querySelector('script[data-breadcrumb-schema]')){
+      const script=document.createElement("script");
+      script.type="application/ld+json";
+      script.dataset.breadcrumbSchema="1";
+      script.textContent=JSON.stringify({
+        "@context":"https://schema.org",
+        "@type":"BreadcrumbList",
+        itemListElement:[
+          {"@type":"ListItem",position:1,name:"Calculator Hub",item:"https://yiminggod1.github.io/Calculator-Hub/"},
+          {"@type":"ListItem",position:2,name:topicName,item:"https://yiminggod1.github.io/Calculator-Hub/"+topicPath},
+          {"@type":"ListItem",position:3,name:title,item:canonical}
+        ]
+      });
+      document.head.appendChild(script);
+    }
+  }
+  enhanceToolSEO();
   decorateVisuals();
   const num = (id, fallback = NaN) => {
     const el = document.getElementById(id);
@@ -166,7 +213,7 @@ const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(
 
   function monthlyPayment(principal, annualRate, years){
     if(!Number.isFinite(principal)||!Number.isFinite(annualRate)||!Number.isFinite(years)||principal<=0||years<=0||annualRate<0) return null;
-    const n=Math.round(years*12), r=annualRate/1200;
+    const n=Math.max(1,Math.round(years*12)), r=annualRate/1200;
     return r ? principal*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1) : principal/n;
   }
   function futureValue(principal, annualRate, years, periods, contribution){
