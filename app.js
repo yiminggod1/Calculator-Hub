@@ -16,6 +16,27 @@
   function calc() {
     const t=document.body.dataset.calc;
     const a=num("a"), b=num("b"), c=num("c"), d=num("d"), e=num("e");
+    if (t==="mortgage" || t==="loan") {
+      const principal=a, rate=b/1200, months=Math.round(c*12);
+      if(principal<=0||c<=0||b<0) return out("Error","Enter a positive amount and valid term/rate");
+      const pmt=rate?principal*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1):principal/months;
+      return out("Monthly payment",money(pmt),"Total interest: "+money(pmt*months-principal));
+    }
+    if (t==="auto-loan-calculator") {
+      const price=a, rate=b/1200, years=c, down=Math.max(0,d);
+      const principal=price-down, months=Math.round(years*12);
+      if(price<=0||principal<=0||years<=0||b<0) return out("Error","Check vehicle price, down payment, rate, and term");
+      const pmt=rate?principal*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1):principal/months;
+      return out("Monthly payment",money(pmt),"Amount financed: "+money(principal)+" · Total interest: "+money(pmt*months-principal));
+    }
+    if (["compound","investment-calculator"].includes(t)) {
+      const principal=Math.max(0,a), annual=b/100, years=Math.max(0,c), periods=Math.max(1,Math.round(d||12)), contribution=Math.max(0,e);
+      const periodic=annual/periods, count=Math.round(years*periods);
+      const growth=periodic?Math.pow(1+periodic,count):1;
+      const future=principal*growth+contribution*(periodic?((growth-1)/periodic):count);
+      return out("Estimated future value",money(future),"Contributions: "+money(contribution*count)+" · Estimate only.");
+    }
+
     if (t==="percentage") return out("Percentage", (a*b/100).toLocaleString(undefined,{maximumFractionDigits:8}));
     if (t==="percentage-change") return a===0?out("Error","Starting value cannot be 0"):out("Percentage change",(((b-a)/a)*100).toFixed(2)+"%");
     if (t==="average") {const x=values();return out("Average",x.length?(x.reduce((p,q)=>p+q,0)/x.length).toFixed(4):"Enter comma-separated numbers");}
