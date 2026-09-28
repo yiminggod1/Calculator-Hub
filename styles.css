@@ -506,3 +506,15 @@ main{position:relative;z-index:1}
 .breadcrumb strong{color:#303b50;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(48vw,360px)}
 .breadcrumb span{color:#b1b8c6}
 @media(max-width:560px){.breadcrumb{margin-bottom:16px}.breadcrumb strong{max-width:55vw}}
+
+/* Editorial content blocks */
+.content-guide{margin-top:30px;padding-top:30px;border-top:1px solid rgba(80,92,115,.12)}
+.content-guide h2{margin-top:30px;margin-bottom:10px}
+.content-guide p{max-width:78ch;line-height:1.75;color:#5f6b82}
+.content-guide .example{margin:16px 0;padding:18px 20px;border:1px solid rgba(80,92,115,.13);border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(247,249,253,.92));box-shadow:0 10px 28px rgba(30,45,75,.05)}
+.content-guide .example strong{display:block;margin-bottom:5px;color:#2d3850}
+.content-guide .faq{display:grid;gap:10px;max-width:78ch}
+.content-guide details{border:1px solid rgba(80,92,115,.13);border-radius:14px;background:#fff;padding:13px 16px}
+.content-guide summary{cursor:pointer;font-weight:750;color:#303b50}
+.content-guide details p{margin:10px 0 0}
+@media(max-width:560px){.content-guide{margin-top:24px;padding-top:24px}.content-guide h2{margin-top:24px}.content-guide .example{padding:15px 16px}}
