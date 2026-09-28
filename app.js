@@ -274,15 +274,15 @@ const SEARCH_SUGGESTIONS=[
 function searchNormalize(value){
   return String(value||"").toLowerCase()
     .replace(/[’']/g,"")
-    .replace(/[^\\p{L}\\p{N}%]+/gu," ")
+    .replace(/[^\p{L}\p{N}%]+/gu," ")
     .trim();
 }
 const SEARCH_STOP=new Set(["a","an","the","i","my","me","is","am","are","to","of","for","how","what","will","can","do","does","should","would","be","calculate","calculator","please","find","get","on","in","and","or","with","from","between","this","that","two","number","numbers"]);
 function searchTokens(value){
-  return searchNormalize(value).split(/\\s+/).filter(x=>x.length>1&&!SEARCH_STOP.has(x));
+  return searchNormalize(value).split(/\s+/).filter(x=>x.length>1&&!SEARCH_STOP.has(x));
 }
 function searchScore(card,q){
-  const href=(card.getAttribute("href")||"").replace(/\\/$/,"").split("/").pop();
+  const href=(card.getAttribute("href")||"").replace(/\/$/,"").split("/").pop();
   const title=searchNormalize(card.querySelector("h3")?.textContent||"");
   const text=searchNormalize(card.textContent+" "+href);
   const aliases=(SEARCH_INTENTS[href]||[]);
@@ -305,7 +305,7 @@ function searchScore(card,q){
   }
   const qt=searchTokens(q);
   for(const t of qt){
-    if(text.split(/\\s+/).some(x=>x===t||x.startsWith(t)||t.startsWith(x)))score+=8;
+    if(text.split(/\s+/).some(x=>x===t||x.startsWith(t)||t.startsWith(x)))score+=8;
   }
   return score;
 }
@@ -356,7 +356,7 @@ function initSearch(){
     if(!q){
       results=SEARCH_SUGGESTIONS.map(([prompt,slug])=>({prompt,slug,score:1}));
     }else{
-      results=cards.map(card=>({card,slug:(card.getAttribute("href")||"").replace(/\\/$/,"").split("/").pop(),score:searchScore(card,q)}))
+      results=cards.map(card=>({card,slug:(card.getAttribute("href")||"").replace(/\/$/,"").split("/").pop(),score:searchScore(card,q)}))
         .filter(x=>x.score>=8).sort((a,b)=>b.score-a.score).slice(0,6)
         .map(x=>({prompt:x.card.querySelector("h3")?.textContent||x.slug,slug:x.slug,card:x.card,score:x.score}));
     }
