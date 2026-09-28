@@ -231,9 +231,9 @@ const SEARCH_INTENTS={
 "sales-tax-calculator":["sales tax","tax on purchase","purchase tax","tax included price","how much tax","sales tax rate","销售税","消费税","买东西税"],
 "profit-margin-calculator":["profit margin","profit percentage","margin","gross margin","business profit","profit on sale","利润率","利润百分比"],
 
-"bmi":["bmi","body mass index","am i overweight","am i underweight","healthy weight index","body mass","how fat am i","我胖不胖","体重指数","BMI"],
-"bmr":["bmr","basal metabolic rate","resting calories","calories at rest","metabolism calculator","基础代谢","基础代谢率"],
-"tdee":["tdee","total daily energy expenditure","daily calorie burn","maintenance calories","calories to maintain weight","how many calories do i burn","每日消耗","维持体重热量"],
+"bmi-calculator":["bmi","body mass index","am i overweight","am i underweight","healthy weight index","body mass","how fat am i","我胖不胖","体重指数","BMI"],
+"bmr-calculator":["bmr","basal metabolic rate","resting calories","calories at rest","metabolism calculator","基础代谢","基础代谢率"],
+"tdee-calculator":["tdee","total daily energy expenditure","daily calorie burn","maintenance calories","calories to maintain weight","how many calories do i burn","每日消耗","维持体重热量"],
 "calorie-calculator":["calorie","calories","daily calories","how many calories should i eat","calorie needs","calorie intake","吃多少热量","一天应该吃多少","卡路里"],
 "body-fat-calculator":["body fat","body fat percentage","fat percentage","body composition","estimate body fat","体脂","体脂率"],
 "ideal-weight-calculator":["ideal weight","healthy weight","target weight","what should i weigh","ideal body weight","标准体重","理想体重"],
