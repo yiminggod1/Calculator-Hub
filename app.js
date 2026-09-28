@@ -59,7 +59,7 @@
   function sexVal(){return document.getElementById("sex")?.value||"male";}
   document.addEventListener("DOMContentLoaded",()=>{
     document.querySelectorAll("[data-action=calc]").forEach(btn=>btn.addEventListener("click",calc));
-    document.addEventListener("click",(ev)=>{if(ev.target.closest("[data-action=calc]")){ev.preventDefault();calc();}},{capture:true});
+    document.addEventListener("click",(ev)=>{if(ev.target.closest("[data-action=calc]")){ev.preventDefault();ev.stopImmediatePropagation();calc();}},{capture:true});
   });
 })();
 function initSearch(){const s=document.getElementById("search");if(!s)return;const cards=[...document.querySelectorAll(".card")];s.addEventListener("input",()=>{const q=s.value.trim().toLowerCase();cards.forEach(c=>{c.style.display=!q||c.textContent.toLowerCase().includes(q)?"":"none"})})}
