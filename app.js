@@ -203,6 +203,112 @@
   });
   window.CalculatorHub={calc};
 })();
+const SEARCH_INTENTS={
+"percentage-calculator":["percentage","percent","what percent","percent of","calculate a percent","percentage of a number","百分比","百分之多少"],
+"percentage-change-calculator":["percentage change","percent change","increase percentage","decrease percentage","percent increase","percent decrease","涨幅","跌幅","百分比变化"],
+"fraction-calculator":["fraction","fractions","mixed fraction","add fractions","subtract fractions","multiply fractions","divide fractions","分数","分数计算"],
+"ratio-calculator":["ratio","ratios","ratio of","compare two numbers","比例","比值","比例计算"],
+"average-calculator":["average","mean","average number","average of","find the average","均值","平均数","平均值"],
+"scientific-calculator":["scientific calculator","advanced calculator","sin cos tan","log calculator","powers","roots","scientific math","科学计算器"],
+"random-number-generator":["random number","random number generator","pick a random number","generate random numbers","random integer","随机数","随机数字"],
+"standard-deviation-calculator":["standard deviation","std deviation","spread of data","data variability","数据标准差","标准差"],
+"probability-calculator":["probability","chance","odds","likelihood","probability of","概率","几率"],
+"gcf-calculator":["gcf","greatest common factor","common factor","highest common factor","最大公因数","最大公约数"],
+"lcm-calculator":["lcm","least common multiple","common multiple","最小公倍数"],
+"quadratic-formula-calculator":["quadratic equation","quadratic formula","solve quadratic","x squared equation","二次方程","二次公式"],
+
+"mortgage-calculator":["mortgage","home loan","house loan","home payment","house payment","mortgage payment","monthly mortgage","monthly house payment","buying a house","how much is my mortgage","房贷","房屋贷款","买房贷款","房贷月供"],
+"loan-calculator":["loan","personal loan","borrow money","loan payment","monthly loan payment","how much will my loan cost","借钱","贷款","贷款月供","每月还款"],
+"auto-loan-calculator":["car loan","auto loan","vehicle loan","car payment","monthly car payment","how much is my car payment","financing a car","buy a car","买车贷款","车贷","汽车贷款","车贷月供"],
+"compound-interest-calculator":["compound interest","compound growth","money grows","interest on interest","future value with interest","bank interest","钱会变多少","复利","复利计算","存钱增长"],
+"simple-interest-calculator":["simple interest","simple interest loan","interest only","simple rate","单利","单利计算"],
+"investment-calculator":["investment","investing","investment growth","portfolio growth","return on investment","how much will my investment grow","投资收益","投资计算"],
+"retirement-calculator":["retirement","retire","retirement savings","how much to save for retirement","retirement nest egg","when can i retire","退休","退休储蓄","退休要存多少钱"],
+"savings-calculator":["savings","save money","savings account","saving each month","how much will i save","savings growth","存钱","储蓄","存款会变多少"],
+"debt-payoff-calculator":["debt payoff","pay off debt","credit card debt","debt free","how long to pay off debt","debt payment","还清债务","还债","信用卡债务"],
+"tip-calculator":["tip","gratuity","restaurant tip","how much tip","tip percentage","split the tip","小费","小费怎么算","餐厅小费"],
+"discount-calculator":["discount","sale price","sale discount","discounted price","how much after discount","percent off","打折","折扣","打折后多少钱"],
+"sales-tax-calculator":["sales tax","tax on purchase","purchase tax","tax included price","how much tax","sales tax rate","销售税","消费税","买东西税"],
+"profit-margin-calculator":["profit margin","profit percentage","margin","gross margin","business profit","profit on sale","利润率","利润百分比"],
+
+"bmi":["bmi","body mass index","am i overweight","am i underweight","healthy weight index","body mass","how fat am i","我胖不胖","体重指数","BMI"],
+"bmr":["bmr","basal metabolic rate","resting calories","calories at rest","metabolism calculator","基础代谢","基础代谢率"],
+"tdee":["tdee","total daily energy expenditure","daily calorie burn","maintenance calories","calories to maintain weight","how many calories do i burn","每日消耗","维持体重热量"],
+"calorie-calculator":["calorie","calories","daily calories","how many calories should i eat","calorie needs","calorie intake","吃多少热量","一天应该吃多少","卡路里"],
+"body-fat-calculator":["body fat","body fat percentage","fat percentage","body composition","estimate body fat","体脂","体脂率"],
+"ideal-weight-calculator":["ideal weight","healthy weight","target weight","what should i weigh","ideal body weight","标准体重","理想体重"],
+"pace-calculator":["pace","running pace","run pace","5k pace","mile pace","minutes per mile","race pace","跑步配速","配速"],
+
+"age-calculator":["age","how old am i","calculate my age","exact age","birthday age","how old","年龄","多大"],
+"date-difference-calculator":["date difference","difference between dates","dates apart","how far apart are two dates","date gap","两个日期差多少","日期差"],
+"days-between-dates-calculator":["days between","days until","number of days between dates","how many days between","days apart","两个日期相差几天","相差几天"],
+"business-days-calculator":["business days","working days","workdays","weekdays between dates","week days","how many work days","工作日","工作日计算"],
+"time-duration-calculator":["time duration","duration between times","how long between times","hours between","minutes between","time difference","时间差","时长","两个时间相差多久"],
+"countdown-calculator":["countdown","countdown timer","days until","time until","how long until","countdown to a date","倒计时","还有多久"],
+"day-of-week-calculator":["day of week","what day is","which day was","what day will","day for a date","what day is today","今天星期几","日期是星期几"],
+"time-zone-converter":["time zone","timezone","convert time zones","time in another country","time in london","time in new york","international time","时区","时区转换"],
+
+"unit-converter":["unit converter","convert units","unit conversion","convert measurement","convert miles","convert meters","单位换算","单位转换"],
+"length-converter":["length converter","distance converter","miles to km","km to miles","feet to meters","inches to cm","length conversion","长度换算","公里英里"],
+"weight-converter":["weight converter","mass converter","kg to lb","lbs to kg","pounds to kilograms","kilograms to pounds","weight conversion","重量换算","公斤磅"],
+"temperature-converter":["temperature converter","celsius to fahrenheit","fahrenheit to celsius","c to f","f to c","degrees conversion","温度换算","摄氏华氏"],
+"volume-converter":["volume converter","liters to gallons","gallons to liters","cups to ml","ml to oz","volume conversion","体积换算","升加仑"],
+"area-calculator":["area","area calculator","area of a room","square footage","square feet","area of rectangle","area of circle","面积","面积计算"],
+"speed-calculator":["speed","speed calculator","distance divided by time","miles per hour","mph","kmh","how fast","速度","时速"],
+"fuel-cost-calculator":["fuel cost","gas cost","gas money","fuel expense","cost to drive","cost of a road trip","how much gas will i use","油钱","汽油费","开车油费"],
+"paint-calculator":["paint","paint calculator","how much paint","paint a room","gallons of paint","wall paint","paint coverage","油漆","需要多少油漆","刷墙"],
+"concrete-calculator":["concrete","concrete calculator","how much concrete","concrete volume","cement for slab","concrete slab","混凝土","水泥","需要多少混凝土"]
+};
+
+const SEARCH_SUGGESTIONS=[
+["How much is my monthly mortgage payment?","mortgage-calculator"],
+["What will my car payment be?","auto-loan-calculator"],
+["What is 20% of 500?","percentage-calculator"],
+["How much should I tip at a restaurant?","tip-calculator"],
+["How many days are between two dates?","days-between-dates-calculator"],
+["How many calories should I eat?","calorie-calculator"],
+["How much paint do I need for a room?","paint-calculator"],
+["What is my BMI?","bmi"]
+];
+
+function searchNormalize(value){
+  return String(value||"").toLowerCase()
+    .replace(/[’']/g,"")
+    .replace(/[^\\p{L}\\p{N}%]+/gu," ")
+    .trim();
+}
+const SEARCH_STOP=new Set(["a","an","the","i","my","me","is","am","are","to","of","for","how","what","will","can","do","does","should","would","be","calculate","calculator","please","find","get","on","in","and","or","with","from","between","this","that","two","number","numbers"]);
+function searchTokens(value){
+  return searchNormalize(value).split(/\\s+/).filter(x=>x.length>1&&!SEARCH_STOP.has(x));
+}
+function searchScore(card,q){
+  const href=(card.getAttribute("href")||"").replace(/\\/$/,"").split("/").pop();
+  const title=searchNormalize(card.querySelector("h3")?.textContent||"");
+  const text=searchNormalize(card.textContent+" "+href);
+  const aliases=(SEARCH_INTENTS[href]||[]);
+  if(!q)return 0;
+  let score=0;
+  if(text.includes(q))score+=38;
+  if(title.includes(q))score+=45;
+  for(const alias of aliases){
+    const a=searchNormalize(alias);
+    if(!a)continue;
+    if(a===q)score+=90;
+    else if(a.includes(q)||q.includes(a))score+=65;
+    else{
+      const qt=searchTokens(q), at=searchTokens(a);
+      if(qt.length&&at.length){
+        const overlap=qt.filter(t=>at.some(x=>x===t||x.startsWith(t)||t.startsWith(x))).length;
+        score+=overlap*12;
+      }
+    }
+  }
+  const qt=searchTokens(q);
+  for(const t of qt){
+    if(text.split(/\\s+/).some(x=>x===t||x.startsWith(t)||t.startsWith(x)))score+=8;
+  }
+  return score;
+}
 function initSearch(){
   const inputs=[document.getElementById("search"),document.getElementById("catalogSearch")].filter(Boolean);
   if(!inputs.length)return;
@@ -210,26 +316,105 @@ function initSearch(){
   const categories=[...document.querySelectorAll("#calculators .category")];
   const clear=document.getElementById("clearSearch");
   const status=document.getElementById("searchStatus");
-  const normalize=v=>v.trim().toLowerCase();
-  const run=(value)=>{
-    const q=normalize(value);
-    let shown=0;
-    cards.forEach(card=>{
-      const hay=(card.textContent+" "+(card.getAttribute("href")||"")).toLowerCase();
-      const match=!q||hay.includes(q);
-      card.hidden=!match;
-      if(match)shown++;
+
+  if(!document.getElementById("searchSuggestionStyle")){
+    const style=document.createElement("style");
+    style.id="searchSuggestionStyle";
+    style.textContent=`
+      .search,.catalog-search{position:relative;z-index:20}
+      .search-suggestions{position:absolute;left:0;right:0;top:calc(100% + 10px);background:rgba(255,255,255,.98);border:1px solid #e3e6f2;border-radius:18px;box-shadow:0 18px 50px rgba(30,35,70,.14);padding:8px;overflow:hidden;z-index:100;backdrop-filter:blur(16px)}
+      .search-suggestion{display:flex;align-items:center;gap:12px;width:100%;border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:12px;color:#17213b;cursor:pointer;font:inherit}
+      .search-suggestion:hover,.search-suggestion:focus-visible{background:#f2f1ff;outline:none}
+      .search-suggestion-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#eeecff;color:#5147d8;flex:none}
+      .search-suggestion-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
+      .search-suggestion-copy strong{font-size:14px;line-height:1.3}
+      .search-suggestion-copy span{font-size:11px;color:#7a829a}
+      .search-suggestion-empty{padding:15px;color:#727b94;font-size:13px}
+      @media(max-width:640px){.search-suggestions{left:-4px;right:-4px}.search-suggestion{padding:13px 11px}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  const dropdowns=new Map();
+  const makeDropdown=input=>{
+    let box=document.createElement("div");
+    box.className="search-suggestions";
+    box.hidden=true;
+    box.setAttribute("role","listbox");
+    input.parentElement?.appendChild(box);
+    dropdowns.set(input,box);
+    return box;
+  };
+  inputs.forEach(makeDropdown);
+
+  const renderSuggestions=(input,value)=>{
+    const box=dropdowns.get(input);
+    if(!box)return;
+    const q=searchNormalize(value);
+    box.innerHTML="";
+    let results;
+    if(!q){
+      results=SEARCH_SUGGESTIONS.map(([prompt,slug])=>({prompt,slug,score:1}));
+    }else{
+      results=cards.map(card=>({card,slug:(card.getAttribute("href")||"").replace(/\\/$/,"").split("/").pop(),score:searchScore(card,q)}))
+        .filter(x=>x.score>=8).sort((a,b)=>b.score-a.score).slice(0,6)
+        .map(x=>({prompt:x.card.querySelector("h3")?.textContent||x.slug,slug:x.slug,card:x.card,score:x.score}));
+    }
+    if(!results.length){
+      box.innerHTML='<div class="search-suggestion-empty">No close match yet. Try describing what you want to calculate.</div>';
+      box.hidden=false;
+      return;
+    }
+    results.forEach(item=>{
+      const button=document.createElement("button");
+      button.type="button";
+      button.className="search-suggestion";
+      button.setAttribute("role","option");
+      const card=item.card;
+      const label=card?.querySelector("h3")?.textContent||item.prompt;
+      const icon=card?.querySelector(".icon")?.textContent?.trim()||"⌕";
+      button.innerHTML='<span class="search-suggestion-icon" aria-hidden="true">'+icon+'</span><span class="search-suggestion-copy"><strong></strong><span></span></span>';
+      button.querySelector("strong").textContent=q?(item.prompt):item.prompt;
+      button.querySelector("span span").textContent=label===item.prompt?"Open calculator":label;
+      button.addEventListener("click",()=>{window.location.href=item.slug+"/";});
+      box.appendChild(button);
     });
+    box.hidden=false;
+  };
+
+  const hideAll=()=>dropdowns.forEach(box=>box.hidden=true);
+  const run=(value,activeInput)=>{
+    const q=searchNormalize(value);
+    let ranked=cards.map(card=>({card,score:searchScore(card,q)}));
+    if(q)ranked=ranked.filter(x=>x.score>0);
+    ranked.sort((a,b)=>b.score-a.score);
+    const matched=new Set(ranked.map(x=>x.card));
+    cards.forEach(card=>card.hidden=!!q&&!matched.has(card));
     categories.forEach(cat=>{
       const hasVisible=cat.querySelector(".grid .card:not([hidden])");
       cat.hidden=!!q&&!hasVisible;
     });
     inputs.forEach(input=>{if(input.value!==value)input.value=value;});
     if(clear)clear.hidden=!q;
-    if(status)status.textContent=q?(shown+" result"+(shown===1?"":"s")):"50 tools";
+    if(status)status.textContent=q?(ranked.length+" result"+(ranked.length===1?"":"s")):"50 tools";
+    renderSuggestions(activeInput||inputs[0],value);
   };
-  inputs.forEach(input=>input.addEventListener("input",()=>run(input.value)));
-  clear?.addEventListener("click",()=>{run("");inputs[0]?.focus();});
-  run(inputs.find(i=>i.value)?.value||"");
+
+  inputs.forEach(input=>{
+    input.setAttribute("autocomplete","off");
+    input.addEventListener("focus",()=>renderSuggestions(input,input.value));
+    input.addEventListener("input",()=>run(input.value,input));
+    input.addEventListener("keydown",ev=>{
+      if(ev.key==="Escape"){hideAll();return;}
+      if(ev.key==="Enter"){
+        const q=searchNormalize(input.value);
+        const best=cards.map(card=>({card,score:searchScore(card,q)})).sort((a,b)=>b.score-a.score)[0];
+        if(q&&best&&best.score>0){ev.preventDefault();window.location.href=best.card.getAttribute("href");}
+      }
+    });
+  });
+  document.addEventListener("click",ev=>{if(!inputs.some(input=>input.parentElement?.contains(ev.target)))hideAll();});
+  clear?.addEventListener("click",()=>{run("",inputs[0]);inputs[0]?.focus();});
+  run("",inputs[0]);
 }
 document.addEventListener("DOMContentLoaded",initSearch);
