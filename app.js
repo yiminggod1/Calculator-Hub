@@ -221,7 +221,7 @@ function initSearch(){
       if(match)shown++;
     });
     categories.forEach(cat=>{
-      const hasVisible=cat.querySelector("#calculators .grid .card:not([hidden])");
+      const hasVisible=cat.querySelector(".grid .card:not([hidden])");
       cat.hidden=!!q&&!hasVisible;
     });
     inputs.forEach(input=>{if(input.value!==value)input.value=value;});
