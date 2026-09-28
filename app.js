@@ -61,6 +61,58 @@ const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(
     "age-calculator":"date","date-difference-calculator":"date","days-between-dates-calculator":"date","business-days-calculator":"date","time-duration-calculator":"date","countdown-calculator":"date","day-of-week-calculator":"date","time-zone-converter":"date",
     "unit-converter":"convert","length-converter":"convert","weight-converter":"convert","temperature-converter":"convert","volume-converter":"convert","area-calculator":"convert","speed-calculator":"convert","fuel-cost-calculator":"convert","paint-calculator":"convert","concrete-calculator":"convert"
   };
+  const TOOL_BLURBS={
+"percentage-calculator":"Find a percentage, amount, or rate in seconds.",
+"percentage-change-calculator":"Measure how much a value increased or decreased.",
+"fraction-calculator":"Add, subtract, multiply, and divide fractions.",
+"ratio-calculator":"Solve ratios, proportions, and equivalent values.",
+"average-calculator":"Find the mean of a set of numbers quickly.",
+"scientific-calculator":"Handle advanced expressions, functions, and powers.",
+"random-number-generator":"Generate a random number within your chosen range.",
+"standard-deviation-calculator":"Measure how spread out your numbers are.",
+"probability-calculator":"Work out the chance of an event or outcome.",
+"gcf-calculator":"Find the greatest common factor of your numbers.",
+"lcm-calculator":"Find the least common multiple of your numbers.",
+"quadratic-formula-calculator":"Solve quadratic equations and inspect the roots.",
+"mortgage-calculator":"Estimate monthly payments, interest, and total cost.",
+"loan-calculator":"See monthly loan payments and total interest.",
+"auto-loan-calculator":"Estimate your car payment and financing cost.",
+"compound-interest-calculator":"See how money grows with compounding over time.",
+"simple-interest-calculator":"Calculate simple interest and the final balance.",
+"investment-calculator":"Project growth from investing and regular contributions.",
+"retirement-calculator":"Estimate how much you may need for retirement.",
+"savings-calculator":"Plan savings growth from deposits and interest.",
+"debt-payoff-calculator":"Estimate payoff time and interest on your debt.",
+"tip-calculator":"Calculate a tip and split the bill with ease.",
+"discount-calculator":"Find sale prices and exactly how much you save.",
+"sales-tax-calculator":"Add sales tax and see the final purchase price.",
+"profit-margin-calculator":"Calculate profit, margin, and markup from your numbers.",
+"bmi-calculator":"Calculate body mass index from height and weight.",
+"bmr-calculator":"Estimate the calories your body uses at rest.",
+"tdee-calculator":"Estimate daily calorie needs from activity level.",
+"calorie-calculator":"Estimate daily calories for your chosen goal.",
+"body-fat-calculator":"Estimate body fat percentage from key measurements.",
+"ideal-weight-calculator":"Explore a healthy-weight estimate for your height.",
+"pace-calculator":"Find running pace, speed, or finish time.",
+"age-calculator":"Calculate your exact age between two dates.",
+"date-difference-calculator":"Measure the exact distance between two dates.",
+"days-between-dates-calculator":"Count the days separating any two calendar dates.",
+"business-days-calculator":"Count weekdays while excluding weekends.",
+"time-duration-calculator":"Find the duration between two times.",
+"countdown-calculator":"Count down precisely to a future date and time.",
+"day-of-week-calculator":"Find which weekday a date falls on.",
+"time-zone-converter":"Convert a local time across world time zones.",
+"unit-converter":"Convert common units quickly in one place.",
+"length-converter":"Convert distance and length between common units.",
+"weight-converter":"Convert weight and mass between common units.",
+"temperature-converter":"Convert Celsius, Fahrenheit, and Kelvin.",
+"volume-converter":"Convert liquid and dry volume measurements.",
+"area-calculator":"Calculate area for common shapes and spaces.",
+"speed-calculator":"Convert or calculate speed from distance and time.",
+"fuel-cost-calculator":"Estimate fuel use and the cost of a trip.",
+"paint-calculator":"Estimate how much paint a room or surface needs.",
+"concrete-calculator":"Estimate concrete volume for common projects."
+};
   function decorateVisuals(){
     document.querySelectorAll(".card[href]").forEach(card=>{
       const s=slugOf(card.getAttribute("href")), topic=TOOL_TOPICS[s];
@@ -68,13 +120,30 @@ const slugOf=h=>{try{return new URL(h,location.href).pathname.split("/").filter(
       if(topic)card.classList.add("tone-"+topic);
       let holder=card.querySelector(".icon");
       if(!holder){holder=document.createElement("span");holder.className="icon";card.insertBefore(holder,card.firstChild)}
-      holder.className="icon card-icon";holder.innerHTML=makeIcon(d,"card-svg");
+      holder.className="icon card-icon";
+      holder.innerHTML=makeIcon(d,"card-svg");
+      if(card.closest("#calculators")){
+        card.classList.add("tool-card");
+        const h=card.querySelector("h3"),p=card.querySelector("p");
+        if(h){
+          let meta=card.querySelector(".card-meta");
+          if(!meta){meta=document.createElement("span");meta.className="card-meta";h.before(meta)}
+          meta.textContent=(topic==="math"?"MATH":topic==="finance"?"FINANCE":topic==="health"?"HEALTH":topic==="date"?"DATE & TIME":"EVERYDAY");
+        }
+        if(p&&TOOL_BLURBS[s])p.textContent=TOOL_BLURBS[s];
+        if(!card.querySelector(".card-arrow")){
+          const a=document.createElement("span");a.className="card-arrow";a.setAttribute("aria-hidden","true");a.textContent="→";card.append(a);
+        }
+        if(!card.querySelector(".card-watermark")){
+          const w=document.createElement("span");w.className="card-watermark";w.innerHTML=makeIcon(d,"watermark-svg");w.setAttribute("aria-hidden","true");card.append(w);
+        }
+      }
     });
-    const s=document.body.dataset.calc,h=document.querySelector(".panel h1"),topic=TOOL_TOPICS[s];
+    const bodySlug=document.body.dataset.calc,h=document.querySelector(".panel h1"),topic=TOOL_TOPICS[bodySlug];
     if(topic)document.querySelector(".panel")?.classList.add("tool-tone-"+topic);
-    if(s&&h&&!h.parentElement.classList.contains("tool-title-row")){
+    if(bodySlug&&h&&!h.parentElement.classList.contains("tool-title-row")){
       const row=document.createElement("div");row.className="tool-title-row";
-      const ico=document.createElement("span");ico.className="tool-title-icon";ico.innerHTML=makeIcon(ICONS[s]);
+      const ico=document.createElement("span");ico.className="tool-title-icon";ico.innerHTML=makeIcon(ICONS[bodySlug]);
       h.parentNode.insertBefore(row,h);row.append(ico,h);
     }
   }
