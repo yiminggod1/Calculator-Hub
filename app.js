@@ -62,29 +62,44 @@
   }
   function evalScientific(expr){
     const ts=tokenize(expr.replace(/π/g,"pi").replace(/×/g,"*").replace(/÷/g,"/"));
-    const prec={"+":1,"-":1,"*":2,"/":2,"^":3};
-    const output=[], ops=[];
-    ts.forEach(tok=>{
-      if(tok.t==="num") output.push(tok);
-      else if(tok.t==="fn") ops.push(tok);
-      else if(tok.t===","){while(ops.length&&ops[ops.length-1].t!=="(")output.push(ops.pop());}
-      else if(tok.t==="(") ops.push(tok);
-      else if(tok.t===")"){
+    const prec={"+":1,"-":1,"*":2,"/":2,"^":4,"u+":5,"u-":5};
+    const output=[],ops=[];
+    let expectValue=true;
+    for(const raw of ts){
+      const tok={...raw};
+      if(tok.t==="num"){output.push(tok);expectValue=false;continue}
+      if(tok.t==="fn"){ops.push(tok);expectValue=true;continue}
+      if(tok.t==="("){ops.push(tok);expectValue=true;continue}
+      if(tok.t===")"){
         while(ops.length&&ops[ops.length-1].t!=="(")output.push(ops.pop());
         if(!ops.length)throw Error("paren");
-        ops.pop(); if(ops.length&&ops[ops.length-1].t==="fn")output.push(ops.pop());
-      } else {
-        while(ops.length && ops[ops.length-1].t!=="(" && ops[ops.length-1].t!=="fn" &&
-          (prec[ops[ops.length-1].t]>prec[tok.t] || (prec[ops[ops.length-1].t]===prec[tok.t]&&tok.t!=="^"))) output.push(ops.pop());
-        ops.push(tok);
+        ops.pop();
+        if(ops.length&&ops[ops.length-1].t==="fn")output.push(ops.pop());
+        expectValue=false;continue;
       }
-    });
+      if(tok.t===","){
+        while(ops.length&&ops[ops.length-1].t!=="(")output.push(ops.pop());
+        expectValue=true;continue;
+      }
+      if((tok.t==="+"||tok.t==="-")&&expectValue)tok.t=tok.t==="-"?"u-":"u+";
+      while(ops.length&&ops[ops.length-1].t!=="("&&ops[ops.length-1].t!=="fn"&&
+        (prec[ops[ops.length-1].t]>prec[tok.t]||(prec[ops[ops.length-1].t]===prec[tok.t]&&tok.t!=="^"&&tok.t!=="u-"&&tok.t!=="u+"))) output.push(ops.pop());
+      ops.push(tok);expectValue=true;
+    }
     while(ops.length){if(ops[ops.length-1].t==="(")throw Error("paren");output.push(ops.pop());}
     const st=[];
     for(const tok of output){
       if(tok.t==="num")st.push(tok.v);
-      else if(tok.t==="fn"){const x=st.pop();if(x===undefined)throw Error("fn");const f={sqrt:Math.sqrt,sin:Math.sin,cos:Math.cos,tan:Math.tan,log:Math.log10,ln:Math.log,abs:Math.abs}[tok.v];st.push(f(x));}
-      else {const y=st.pop(),x=st.pop();if(x===undefined||y===undefined)throw Error("op");st.push(({"+":(a,b)=>a+b,"-":(a,b)=>a-b,"*":(a,b)=>a*b,"/":(a,b)=>a/b,"^":(a,b)=>Math.pow(a,b)})[tok.t](x,y));}
+      else if(tok.t==="fn"){
+        const x=st.pop();if(x===undefined)throw Error("fn");
+        const f={sqrt:Math.sqrt,sin:Math.sin,cos:Math.cos,tan:Math.tan,log:Math.log10,ln:Math.log,abs:Math.abs}[tok.v];
+        st.push(f(x));
+      } else if(tok.t==="u-"||tok.t==="u+"){
+        const x=st.pop();if(x===undefined)throw Error("unary");st.push(tok.t==="u-"?-x:+x);
+      } else {
+        const y=st.pop(),x=st.pop();if(x===undefined||y===undefined)throw Error("op");
+        st.push(({"+":(a,b)=>a+b,"-":(a,b)=>a-b,"*":(a,b)=>a*b,"/":(a,b)=>a/b,"^":(a,b)=>Math.pow(a,b)})[tok.t](x,y));
+      }
     }
     if(st.length!==1||!Number.isFinite(st[0]))throw Error("result");
     return st[0];
@@ -97,7 +112,7 @@
     if(t==="percentage"){if(!Number.isFinite(a)||!Number.isFinite(b))return out("Error","Enter both values");return out("Percentage",(a*b/100).toLocaleString(undefined,{maximumFractionDigits:8}),b+"% of "+a);}
     if(t==="percentage-change"){if(!Number.isFinite(a)||!Number.isFinite(b)||a===0)return out("Error","Starting value must be non-zero");return out("Percentage change",(((b-a)/Math.abs(a))*100).toFixed(2)+"%","From "+a+" to "+b);}
     if(t==="average"){const x=values();return out(x.length?"Average":"Error",x.length?(x.reduce((p,q)=>p+q,0)/x.length).toFixed(4):"Enter comma-separated numbers");}
-    if(t==="gcf"||t==="lcm"){if(!Number.isFinite(a)||!Number.isFinite(b)||a===0||b===0)return out("Error","Enter two non-zero integers");const g=gcd(a,b);return out(t==="gcf"?"GCF":"LCM",String(t==="gcf"?g:Math.abs(a*b)/g));}
+    if(t==="gcf"||t==="lcm"){if(![a,b].every(Number.isInteger)||a===0||b===0)return out("Error","Enter two non-zero integers");const g=gcd(a,b);return out(t==="gcf"?"GCF":"LCM",String(t==="gcf"?g:Math.abs(a*b)/g));}
     if(t==="random"){if(!Number.isFinite(a)||!Number.isFinite(b))return out("Error","Enter minimum and maximum");let lo=Math.ceil(a),hi=Math.floor(b);if(lo>hi)[lo,hi]=[hi,lo];return out("Random number",String(Math.floor(Math.random()*(hi-lo+1))+lo),"Inclusive range: "+lo+" to "+hi);}
     if(t==="probability"){if(!Number.isFinite(a)||!Number.isFinite(b)||a<0||b<=0||a>b)return out("Error","Use favorable outcomes ≥ 0 and total outcomes > 0");return out("Probability",((a/b)*100).toFixed(2)+"%");}
     if(t==="quadratic-formula-calculator"){if(!Number.isFinite(a)||!Number.isFinite(b)||!Number.isFinite(c)||a===0)return out("Error","A must be non-zero");const disc=b*b-4*a*c;if(disc<0)return out("Complex roots",(-b/(2*a)).toFixed(4)+" ± "+(Math.sqrt(-disc)/(2*a)).toFixed(4)+"i");const s=Math.sqrt(disc);return out("Roots",(((-b+s)/(2*a)).toFixed(4))+" and "+(((-b-s)/(2*a)).toFixed(4)));}
@@ -108,7 +123,7 @@
 
     if(t==="mortgage"||t==="loan"){const p=monthlyPayment(a,b,c);if(p===null)return out("Error","Enter a positive amount, valid rate, and term");const n=Math.round(c*12);return out("Monthly payment",money(p),"Total interest: "+money(p*n-a));}
     if(t==="auto-loan-calculator"){const down=Math.max(0,Number.isFinite(d)?d:0);if(!Number.isFinite(a)||!Number.isFinite(b)||!Number.isFinite(c)||a<=0||down>=a)return out("Error","Check vehicle price, down payment, rate, and term");const p=monthlyPayment(a-down,b,c);const n=Math.round(c*12);return out("Monthly payment",money(p),"Amount financed: "+money(a-down)+" · Total interest: "+money(p*n-(a-down)));}
-    if(["compound","investment-calculator","savings-calculator","retirement-calculator"].includes(t)){const fv=futureValue(a,b,c,d||12,e||0);if(fv===null)return out("Error","Check principal, rate, years, frequency, and contribution");const count=Math.round(c*(d||12));return out("Estimated future value",money(fv),"Contributions: "+money((e||0)*count)+" · Estimate only.");}
+    if(["compound","investment-calculator","savings-calculator","retirement-calculator"].includes(t)){if(![a,b,c,d].every(Number.isFinite)||a<0||c<0||d<=0||b<=-100)return out("Error","Check principal, rate, years, and compounding frequency");const contribution=Number.isFinite(e)?e:0;if(contribution<0)return out("Error","Contribution cannot be negative");const fv=futureValue(a,b,c,d,contribution);if(fv===null)return out("Error","Check principal, rate, years, frequency, and contribution");const count=Math.round(c*d);return out("Estimated future value",money(fv),"Contributions: "+money(contribution*count)+" · Estimate only.");}
     if(t==="simple-interest-calculator"){if(![a,b,c].every(Number.isFinite)||a<0||c<0)return out("Error","Enter principal, rate, and non-negative time");const interest=a*b/100*c;return out("Interest",money(interest),"Total amount: "+money(a+interest));}
     if(t==="debt-payoff-calculator"){if(![a,b,c].every(Number.isFinite)||a<=0||c<=0)return out("Error","Enter balance, APR, and monthly payment");const r=b/1200;if(r&&c<=a*r)return out("Error","Payment must exceed monthly interest");const months=r?-Math.log(1-a*r/c)/Math.log(1+r):a/c;return out("Estimated payoff",Math.ceil(months)+" months","Estimated interest: "+money(c*months-a));}
     if(t==="tip"){if(!Number.isFinite(a)||!Number.isFinite(b))return out("Error","Enter bill and tip rate");const tip=a*b/100,total=a+tip,people=Math.max(1,Math.trunc(Number.isFinite(c)?c:1));return out("Total / per person",money(total)+" / "+money(total/people),"Tip: "+money(tip)+" · "+people+" person(s)");}
@@ -119,7 +134,7 @@
     if(t==="bmi"){if(!Number.isFinite(a)||!Number.isFinite(b)||a<=0||b<=0)return out("Error","Enter positive weight and height");const h=b/100,bmi=a/(h*h);return out("BMI",bmi.toFixed(1),"Weight "+a+" kg · Height "+b+" cm");}
     if(t==="bmr"){const sex=$("#sex")?.value||"male";if(![a,b,c].every(Number.isFinite)||a<=0||b<=0||c<=0)return out("Error","Enter weight, height, and age");const base=10*a+6.25*b-5*c+(sex==="female"?-161:5);return out("Estimated BMR",Math.round(base)+" kcal/day","Mifflin–St Jeor estimate.");}
     if(t==="tdee"||t==="calorie-calculator"){const sex=$("#sex")?.value||"male",activity=Number.isFinite(d)?d:1.2;if(![a,b,c].every(Number.isFinite)||a<=0||b<=0||c<=0||activity<=0)return out("Error","Enter weight, height, age, and activity");const base=10*a+6.25*b-5*c+(sex==="female"?-161:5);return out("Estimated daily calories",Math.round(base*activity)+" kcal/day","Mifflin–St Jeor × activity factor; general estimate.");}
-    if(t==="body-fat-calculator"){const sex=$("#sex")?.value||"male";if(!Number.isFinite(a)||!Number.isFinite(b)||a<=0||b<=0)return out("Error","Enter BMI and age");const bf=1.2*a+0.23*b-(sex==="female"?10.8:5.4)-5.4;return out("Estimated body fat",Math.max(0,bf).toFixed(1)+"%","Deurenberg-style estimate; not a direct measurement.");}
+    if(t==="body-fat-calculator"){const sex=$("#sex")?.value||"male";if(!Number.isFinite(a)||!Number.isFinite(b)||a<=0||b<=0)return out("Error","Enter BMI and age");const sexFactor=sex==="male"?1:0;const bf=1.2*a+0.23*b-10.8*sexFactor-5.4;return out("Estimated body fat",Math.max(0,bf).toFixed(1)+"%","Deurenberg-style estimate; not a direct measurement.");}
     if(t==="ideal-weight-calculator"){const sex=$("#sex")?.value||"male";if(!Number.isFinite(b)||b<=0)return out("Error","Enter height");const inches=b/2.54,base=sex==="female"?45.5:50;return out("Estimated ideal weight",(base+2.3*Math.max(0,inches-60)).toFixed(1)+" kg","Devine formula estimate; not a health target.");}
     if(t==="pace-calculator"){if(!Number.isFinite(a)||!Number.isFinite(b)||a<0||b<=0)return out("Error","Enter time and a positive distance");return out("Pace",(a/b).toFixed(2)+" min/unit");}
     if(t==="speed"){if(!Number.isFinite(a)||!Number.isFinite(b)||b<=0)return out("Error","Time must be greater than 0");return out("Speed",(a/b).toFixed(3)+" distance/time");}
@@ -150,6 +165,17 @@
 
   document.addEventListener("DOMContentLoaded",()=>{
     document.querySelectorAll("[data-action=calc]").forEach(btn=>btn.addEventListener("click",(ev)=>{ev.preventDefault();calc();}));
+    const shape=$("#shape");
+    const areaFields={rectangle:["a","b"],circle:["a"],triangle:["a","b"]};
+    const syncAreaFields=()=>{
+      if(!shape)return;
+      const labels={rectangle:["Length","Width"],circle:["Radius"],triangle:["Base","Height"]}[shape.value]||["Value","Second value"];
+      const ids=areaFields[shape.value]||areaFields.rectangle;
+      document.querySelectorAll("[data-area-field]").forEach(el=>el.hidden=true);
+      ids.forEach((id,i)=>{const wrap=document.querySelector('[data-area-field="'+id+'"]');if(wrap){wrap.hidden=false;const label=wrap.querySelector("label");if(label)label.textContent=labels[i]||"Value";}});
+    };
+    shape?.addEventListener("change",syncAreaFields);
+    syncAreaFields();
   });
   window.CalculatorHub={calc};
 })();
